@@ -53,22 +53,33 @@ function getRandomRect(width, height){
     return [
         Math.floor(Math.random() * width), 
         Math.floor(Math.random() * height),
-        Math.floor(Math.random() * 5) + 1, 
-        Math.floor(Math.random() * 5) + 1
+        Math.floor(Math.random() * 20) + 1, 
+        Math.floor(Math.random() * 20) + 1
     ]
 }
 
 function getNextCtx(inputCtx, rect, color){
     oldData = inputCtx.getImageData(rect[0], rect[1], rect[2], rect[3]);
     oldDiff = compareData(oldData, goalData, rect);
-    
 
     tempCtx.fillStyle = color;
     tempCtx.fillRect(0, 0, rect[2], rect[3]);
 
     newDat = tempCtx.getImageData(0, 0, rect[2], rect[3]);
+
     if(compareData(newDat, goalData, rect) < oldDiff) return true;
     return false;
+}
+
+function randomizeData(imgData){
+    let tempDat = imgData;
+    len = imgData.length;
+    for(let i = 0; i < len; i+=4){
+        imgData.data[i+0] = Math.floor(Math.random()*255);
+        imgData.data[i+1] = Math.floor(Math.random()*255);
+        imgData.data[i+2] = Math.floor(Math.random()*255);
+    }
+    return tempDat;
 }
 
 var averageFrametime = 0;
